@@ -1,0 +1,24 @@
+g++ -o procctl procctl.cpp 
+./procctl 
+./procctl 5 /usr/bin/ls -al /home/oarrrr/cc 
+./procctl 5 ls -al /home/oarrrr/cc 
+ps -ef |grep procctl
+./execltest 
+q
+quit
+exit
+exit
+exit
+ls 
+whatis ls
+whatis tar
+whatis clean
+clean-buffer-list 
+whatis clear
+gtags 
+make 
+make clean
+make 
+man atof
+man remove
+man strstr
