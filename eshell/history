@@ -22,3 +22,7 @@ make
 man atof
 man remove
 man strstr
+ls 
+touch 1.txt
+ls 
+rm 1.txt 

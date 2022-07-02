@@ -38,8 +38,11 @@
 ;; 显示行号
 (global-linum-mode 1)
 
-;; 更改光标的样式（不能生效，解决方案见第二集）
-(setq cursor-type '(bar . 3)) ;;光标长度3
+;; 更改光标的样式（不能生效，解决方案见5day）
+;;setq更改为setq-default
+(setq-default cursor-type '(bar . 3)) ;;光标长度3
+;;显示对应的括号
+(show-paren-mode t)
 
 
 
@@ -58,6 +61,8 @@
 ;; 这一行代码，将函数 open-init-file 绑定到 <f2> 键上
 (global-set-key (kbd "<f2>") 'open-init-file)
 (global-set-key (kbd "C-h C-f") 'find-function)
+(global-set-key (kbd "C-h C-v") 'find-variable)
+(global-set-key (kbd "C-h C-k") 'find-function-on-key)
 (global-set-key (kbd "C-c q") 'quit-window)
 (global-set-key (kbd "C-c s") 'eshell)
 
@@ -100,6 +105,54 @@
 (global-set-key (kbd "M-s M-s") 'consult-imenu)
 
 ;;minibuffer============================================
+
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp/awesome-tab"))
+
+(require 'awesome-tab)
+
+(awesome-tab-mode t)
+(defun awesome-tab-buffer-groups ()
+"`awesome-tab-buffer-groups' control buffers' group rules.
+Group awesome-tab with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+All buffer name start with * will group to \"Emacs\".
+Other buffer group by `awesome-tab-get-group-name' with project name."
+(list
+(cond
+    ((or (string-equal "*" (substring (buffer-name) 0 1))
+	(memq major-mode '(magit-process-mode
+			    magit-status-mode
+			    magit-diff-mode
+			    magit-log-mode
+			    magit-file-mode
+			    magit-blob-mode
+			    magit-blame-mode)))
+    "Emacs")
+    ((derived-mode-p 'eshell-mode)
+    "EShell")
+    ((derived-mode-p 'dired-mode)
+    "Dired")
+    ((memq major-mode '(org-mode org-agenda-mode diary-mode))
+    "OrgMode")
+    ((derived-mode-p 'eaf-mode)
+    "EAF")
+    (t
+    (awesome-tab-get-group-name (current-buffer))))))
+
+;;不再生成备份文件~
+(setq make-backup-files nil)
+
+;;更快捷的在图形界面的菜单中打开最近编辑过的文件
+;;M-x 输入recentf-open-files查看最近打开过的文件
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-item 17)
+;;绑定C-x b 使其不仅能显示buffer还可显示最近打开的文件
+(global-set-key (kbd "C-x b") 'consult-buffer)
+
+;;选中一段文字输入后直接将旧文本替换
+(delete-selection-mode t)
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
